@@ -10,11 +10,21 @@ struct Paises {
     char nome[50];
 };
 
+struct indexPaises {
+    int codigoPais;
+    int index;
+};
+
 struct Cidades {
     int codigoCidade;
     char nome[50];
     char uf[3];
     int codigoPais;
+};
+
+struct indexCidades {
+    int codigoCidade;
+    int index;
 };
 
 struct Guias {
@@ -25,11 +35,21 @@ struct Guias {
     int codigoCidade;
 };
 
+struct indexGuias {
+    int codigoGuia;
+    int index;
+};
+
 struct Clientes {
     int codigoCliente;
     char nome[50];
     char endereco[100];
     int codigoCidade;
+};
+
+struct indexClientes {
+    int codigoCliente;
+    int index;
 };
 
 struct Pacotes {
@@ -41,6 +61,11 @@ struct Pacotes {
     int quantidadeMaximaSuportada;
 };
 
+struct indexPacotes {
+    int codigoPacote;
+    int index;
+};
+
 struct Vendas {
     int codigoVenda;
     int codigoCliente;
@@ -49,8 +74,11 @@ struct Vendas {
     double valorTotal;
 };
 
+struct indexVendas {
+    int codigoVenda;
+    int index;
+};
 
-using namespace std;
 
 int main() {
 
