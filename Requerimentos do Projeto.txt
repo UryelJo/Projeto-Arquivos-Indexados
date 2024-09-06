@@ -6,7 +6,7 @@ Cidades: código_cidade, nome, UF, código_país
 
 Guias: código_guia, nome, endereço, telefone, código_cidade
 
-Clientes: código_cliente, nome, endereço, código_cidade
+Clientes: código_cliente, nomedigo_país, nom, endereço, código_cidade
 
 Pacotes: código_pacote, descrição, código_guia, valor_por_pessoa, total_participantes, quant_max_participantes
 
