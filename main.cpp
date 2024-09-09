@@ -86,6 +86,7 @@ void textoFinal();
 
 void incluirNovoPais(vector<Paises>&, vector<IndexPaises>&);
 void incluirNovaCidade(vector<Cidades>&, vector<IndexCidades>&);
+void incluirNovoGuia(vector<Guias>&, vector<IndexGuias>&, vector<Cidades>&, vector<IndexCidades>&, vector<Paises>&, vector<IndexPaises>&);
 
 //Funções de exibição de códigos
 void exibirCodigosPaises(vector<IndexPaises>&, vector<Paises>&);
@@ -122,7 +123,6 @@ int main() {
         {9, 4},
         {12, 1}
     };
-
     vector<Cidades> cidades = {
         {103, "Rio de Janeiro", "RJ", 8},
         {7, "Sao Paulo", "SP", 8},
@@ -139,12 +139,11 @@ int main() {
         {97, 4},
         {103, 0}
     };
-
     vector<Guias> guias = {
         {6, "Francisco Alfredo", "Rua Almirzinho", "1111-1111", 4},
         {34, "Daniel Moscou Perdeu", "Rua Dieguinho", "2222-2222", 1},
         {52, "Elma Maria Pinto", "Rua Vitaozin", "3333-3333", 7},
-        {16, "Jacinto Cabeça latras", "Rua Giovaninha", "4444-4444", 89},
+        {16, "Jacinto Cabeca latras", "Rua Giovaninha", "4444-4444", 89},
         {90, "Tisugiro kimikoma", "Rua Guigazinho", "5555-5555", 103}
     };
     vector<IndexGuias> indexGuias = {
@@ -154,11 +153,10 @@ int main() {
         {52, 2},
         {90, 4}
     };
-
     vector<Clientes> clientes = {
-        {12, "João da Silva", "Rua das Flores", 7},
+        {12, "Joao da Silva", "Rua das Flores", 7},
         {90, "Maria de Souza", "Rua das Pedras", 1},
-        {5, "José da Costa", "Rua das Árvores", 89},
+        {5, "Jose da Costa", "Rua das Árvores", 89},
         {8, "Ana Paula", "Rua das Rosas", 4},
         {27, "Carlos Alberto", "Rua das Margaridas", 103}
     };
@@ -169,7 +167,6 @@ int main() {
         {27, 4},
         {90, 1}
     };
-
     vector<Pacotes> pacotes = {
         {5, "Viagem para a China, durante o tempo que o governo deixar, com direito a trabalho escravo e vigilancia indesejada 24 horas por dia", 52, 1000.00, 5, 10},
         {1, "Viagem para o Oriente Médio, durante 1 mês, com visita a faixa de gaza", 6, 800.00, 7, 10},
@@ -186,7 +183,7 @@ int main() {
     };
 
     do {
-        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - incluir um novo Pais \n" << "\t\t[2] - incluir uma nova cidade \n" << "\n\n\t\t[0] - Sair \n" << "\t}";
+        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - Incluir um novo Pais \n" << "\t\t[2] - Incluir uma nova cidade \n"<<"\t\t[3] - Incluir novo Guia \n" << "\n\n\t\t[0] - Sair \n" << "\t}";
         cout << "[>] ";
         cin >> opcao;
         cin.ignore();
@@ -194,6 +191,8 @@ int main() {
             incluirNovoPais(paises, indexPaises);
         } else if (opcao == 2) {
             incluirNovaCidade(cidades, indexCidades);
+        } else if(opcao == 3) {
+            incluirNovoGuia(guias, indexGuias, cidades, indexCidades, paises, indexPaises);
         }
     }while(opcao != 0);
 
@@ -306,6 +305,58 @@ void incluirNovaCidade(vector<Cidades> & cidades, vector<IndexCidades> & indexCi
 
     system("cls");
 }
+void incluirNovoGuia(vector<Guias> & guias, vector<IndexGuias> & indexGuias, vector<Cidades> & cidades, vector<IndexCidades> & indexCidades, vector<Paises> & paises, vector<IndexPaises> & indexPaises) {
+    bool inseriu = false;
+    Guias novoGuia{};
+    IndexGuias novoIndexGuia{};
+    system("cls");
+    do {
+        exibirCodigosGuias(indexGuias, guias);
+        do {
+            cout<<"\n\t Informe o codigo do novo guia \n\t [>]  ";
+            cin >> novoGuia.codigoGuia;
+            cin.ignore();
+        }while(novoGuia.codigoGuia < 0);
+    } while (buscarGuiaPorCodigo(indexGuias, novoGuia.codigoGuia));
+    novoIndexGuia.codigoGuia = novoGuia.codigoGuia;
+    cout<<"\n\t Informe o nome do novo guia \n\t [>]  ";
+    gets(novoGuia.nome);
+    cout<<"\n\t Informe o endereco do novo guia \n\t [>]  ";
+    gets(novoGuia.endereco);
+    cout<<"\n\t Informe o telefone do novo guia \n\t [>]  ";
+    gets(novoGuia.telefone);
+    cout<< endl;
+    exibirCodigosCidades(indexCidades, cidades);
+    bool aux = false;
+    do {
+        cout<<"\t Informe o codigo da cidade do novo guia \n\t [>]  ";
+        cin>>novoGuia.codigoCidade;
+        cin.ignore();
+        for(auto & indexCidade : indexCidades) {
+            if(indexCidade.codigoCidade == novoGuia.codigoCidade && !aux) {
+                aux = true;
+            }
+        }
+        if(aux == false) {
+            cout<<"\t[==Cidade nao encontrada==]" <<endl;
+        }
+    }while(aux == false);
+    guias.push_back(novoGuia);
+    novoIndexGuia.index = static_cast<int>(guias.size()-1);
+    int position = 0;
+    for(auto & indexGuia : indexGuias) {
+        if(novoIndexGuia.codigoGuia < indexGuia.codigoGuia && !inseriu) {
+            indexGuias.insert(indexGuias.begin() + position, novoIndexGuia);
+            inseriu = true;
+        }
+        if(position == indexGuias.size() - 1 && !inseriu) {
+            indexGuias.push_back(novoIndexGuia);
+            inseriu = true;
+        }
+        position++;
+    }
+    system("cls");
+}
 
 void exibirCodigosCidades(vector<IndexCidades> & indexCidades, vector<Cidades> & cidades) {
     cout<<"\tCidades Cadastradas: "<<endl;
@@ -320,6 +371,12 @@ void exibirCodigosPaises(vector<IndexPaises> & indexPaises, vector<Paises> & pai
         cout<<"\t\t [Codigo: "<<indexPais.codigoPais<<"] "<< paises[indexPais.index].nome<<endl;
     }
     cout<<"\n";
+}
+void exibirCodigosGuias(vector<IndexGuias> & indexGuias, vector<Guias> & guias) {
+    cout<< "\tGuias Cadastrados: "<<endl;
+    for(auto & indexGuia : indexGuias) {
+        cout<<"\t\t [Codigo: "<<indexGuia.codigoGuia<<"] "<< guias[indexGuia.index].nome<<endl;
+    }
 }
 
 //Funções de busca genéricos que retornam Boolean para verificar se o código já existe
@@ -347,7 +404,7 @@ bool buscarGuiaPorCodigo(vector<IndexGuias>& indexGuias, int codigo ) {
     for (auto & index : indexGuias) {
         if(index.codigoGuia == codigo) {
             system("cls");
-            cout<<"Guia ja cadastrado, informe outro codigo: ";
+            cout<<"\t[==Guia ja cadastrado==]\n\n";
             return true;
         }
     }
@@ -357,7 +414,7 @@ bool buscarClientePorCodigo(vector<IndexClientes>& indexClientes, int codigo ) {
     for (auto & index : indexClientes) {
         if(index.codigoCliente == codigo) {
             system("cls");
-            cout<<"Cliente ja cadastrado, informe outro codigo: ";
+            cout<<"\t[==Cliente ja cadastrado==]\n\n";
             return true;
         }
     }
@@ -367,7 +424,7 @@ bool buscarPacotePorCodigo(vector<IndexPacotes>& indexPacotes, int codigo ) {
     for (auto & index : indexPacotes) {
         if(index.codigoPacote == codigo) {
             system("cls");
-            cout<<"Pacote ja cadastrado, informe outro codigo: ";
+            cout<<"\t[==Pacote ja cadastrado==]\n\n";
             return true;
         }
     }
@@ -377,7 +434,7 @@ bool buscarVendaPorCodigo(vector<IndexVendas>& indexVendas, int codigo ) {
     for (auto & index : indexVendas) {
         if(index.codigoVenda == codigo) {
             system("cls");
-            cout<<"Venda ja cadastrada, informe outro codigo: ";
+            cout<<"\t[==Venda ja cadastrada==]\n\n";
             return true;
         }
     }
