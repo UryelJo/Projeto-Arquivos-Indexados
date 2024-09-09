@@ -87,12 +87,14 @@ void textoFinal();
 void incluirNovoPais(vector<Paises>&, vector<IndexPaises>&);
 void incluirNovaCidade(vector<Cidades>&, vector<IndexCidades>&);
 
+//Funções de exibição de códigos
 void exibirCodigosPaises(vector<IndexPaises>&, vector<Paises>&);
 void exibirCodigosCidades(vector<IndexCidades>&, vector<Cidades>&);
 void exibirCodigosGuias(vector<IndexGuias>&, vector<Guias>&);
 void exibirCodigosClientes(vector<IndexClientes>&, vector<Clientes>&);
 void exibirCodigosPacotes(vector<IndexPacotes>&, vector<Pacotes>&);
 
+//Funções de busca genéricos que retornam Boolean para verificar se o código já existe
 bool buscarPaisPorCodigo(vector<IndexPaises>&, int);
 bool buscarCidadePorCodigo(vector<IndexCidades>&, int);
 bool buscarGuiaPorCodigo(vector<IndexGuias>&, int);
@@ -253,11 +255,17 @@ void incluirNovoPais(vector<Paises>& paises, vector<IndexPaises>& indexPaises) {
 
     novoIndexPais.index = static_cast<int>(paises.size()-1);
 
-    for(int position = 0; position < indexPaises.size(); position++) {
-        if(novoIndexPais.codigoPais < indexPaises[position].codigoPais && !inseriu) {
+    int position = 0;
+    for(auto & indexPais : indexPaises) {
+        if(novoIndexPais.codigoPais < indexPais.codigoPais && !inseriu) {
             indexPaises.insert(indexPaises.begin() + position, novoIndexPais);
             inseriu = true;
         }
+        if(position == indexPaises.size() - 1 && !inseriu) {
+            indexPaises.push_back(novoIndexPais);
+            inseriu = true;
+        }
+        position++;
     }
     system("cls");
 }
@@ -283,12 +291,20 @@ void incluirNovaCidade(vector<Cidades> & cidades, vector<IndexCidades> & indexCi
 
     novoIndexCidade.index = static_cast<int>(cidades.size()-1);
 
-    for(int position = 0; position < indexCidades.size(); position++) {
-        if(novoIndexCidade.codigoCidade < indexCidades[position].codigoCidade && !inseriu) {
+    int position = 0;
+    for(auto & indexCidade : indexCidades) {
+        if(novoIndexCidade.codigoCidade < indexCidade.codigoCidade && !inseriu) {
             indexCidades.insert(indexCidades.begin() + position, novoIndexCidade);
             inseriu = true;
         }
+        if(position == indexCidades.size() - 1 && !inseriu) {
+            indexCidades.push_back(novoIndexCidade);
+            inseriu = true;
+        }
+        position++;
     }
+
+    system("cls");
 }
 
 void exibirCodigosCidades(vector<IndexCidades> & indexCidades, vector<Cidades> & cidades) {
@@ -306,6 +322,7 @@ void exibirCodigosPaises(vector<IndexPaises> & indexPaises, vector<Paises> & pai
     cout<<"\n";
 }
 
+//Funções de busca genéricos que retornam Boolean para verificar se o código já existe
 bool buscarPaisPorCodigo(vector<IndexPaises>& indexPaises, int codigo ) {
     for (auto & index : indexPaises) {
         if(index.codigoPais == codigo) {
