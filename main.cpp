@@ -123,10 +123,10 @@ int main() {
 
     vector<Cidades> cidades = {
         {103, "Rio de Janeiro", "RJ", 8},
-        {7, "São Paulo", "SP", 8},
+        {7, "Sao Paulo", "SP", 8},
         {89, "Buenos Aires", "BA", 12},
-        {4, "Montevidéu", "MT", 3},
-        {97, "Assunção", "AS", 7},
+        {4, "Montevideu", "MT", 3},
+        {97, "Assuncao", "AS", 7},
         {1, "Santiago", "ST", 9}
     };
     vector<IndexCidades> indexCidades = {
@@ -184,16 +184,15 @@ int main() {
     };
 
     do {
-        cout<<"\n\n\tInforme a opcao desejada{ \n" << "\t\t[1] - incluir um novo Pais \n" << "\t\t[2] - incluir uma nova cidade \n" << "\n\n\t\t[0] - Sair \n" << "\t}";
+        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - incluir um novo Pais \n" << "\t\t[2] - incluir uma nova cidade \n" << "\n\n\t\t[0] - Sair \n" << "\t}";
         cout << "[>] ";
         cin >> opcao;
         cin.ignore();
         if(opcao == 1) {
             incluirNovoPais(paises, indexPaises);
         } else if (opcao == 2) {
-            //incluirNovaCidade(cidades, indexCidades);
+            incluirNovaCidade(cidades, indexCidades);
         }
-
     }while(opcao != 0);
 
     textoFinal();
@@ -216,6 +215,7 @@ void textoInicial() {
             system("cls");
         }
     }
+    cout<<"\n\n";
 }
 void textoFinal() {
     vector<char> textoAdeus = { '=' ,'=' ,'=' ,'=' ,'[' ,'A', 't', 'e', ' ', 'a', ' ', 'P', 'r', 'o', 'x', 'i', 'm', 'a', ' ', 'V', 'i', 's', 'i', 't', 'a', ' ', ']' , '=' ,'=' ,'=' ,'='};
@@ -234,6 +234,7 @@ void textoFinal() {
 }
 
 void incluirNovoPais(vector<Paises>& paises, vector<IndexPaises>& indexPaises) {
+    bool inseriu = false;
     Paises novoPais{};
     IndexPaises novoIndexPais{};
     system("cls");
@@ -245,22 +246,64 @@ void incluirNovoPais(vector<Paises>& paises, vector<IndexPaises>& indexPaises) {
             cin.ignore();
         } while(novoPais.codigoPais < 0);
     }while(buscarPaisPorCodigo(indexPaises, novoPais.codigoPais));
+    novoIndexPais.codigoPais = novoPais.codigoPais;
+    cout<<"\t Informe o nome do novo pais \n\t [>]  ";
+    gets(novoPais.nome);
+    paises.push_back(novoPais);
+
+    novoIndexPais.index = static_cast<int>(paises.size()-1);
+
+    for(int position = 0; position < indexPaises.size(); position++) {
+        if(novoIndexPais.codigoPais < indexPaises[position].codigoPais && !inseriu) {
+            indexPaises.insert(indexPaises.begin() + position, novoIndexPais);
+            inseriu = true;
+        }
+    }
+    system("cls");
+}
+void incluirNovaCidade(vector<Cidades> & cidades, vector<IndexCidades> & indexCidades) {
+    bool inseriu = false;
+    Cidades novaCidade{};
+    IndexCidades novoIndexCidade{};
+    system("cls");
+    do {
+        exibirCodigosCidades(indexCidades, cidades);
+        cout<<"\t Informe o codigo da nova cidade \n\t [>]  ";
+        do {
+            cin>>novaCidade.codigoCidade;
+            cin.ignore();
+        } while(novaCidade.codigoCidade < 0);
+    }while (buscarCidadePorCodigo(indexCidades, novaCidade.codigoCidade));
+    novoIndexCidade.codigoCidade = novaCidade.codigoCidade;
+    cout<<"\t Informe o nome da nova cidade \n\t [>]  ";
+    gets(novaCidade.nome);
+    cout<<"\t Informe a UF da nova cidade \n\t [>]  ";
+    gets(novaCidade.uf);
+    cidades.push_back(novaCidade);
+
+    novoIndexCidade.index = static_cast<int>(cidades.size()-1);
+
+    for(int position = 0; position < indexCidades.size(); position++) {
+        if(novoIndexCidade.codigoCidade < indexCidades[position].codigoCidade && !inseriu) {
+            indexCidades.insert(indexCidades.begin() + position, novoIndexCidade);
+            inseriu = true;
+        }
+    }
 }
 
 void exibirCodigosCidades(vector<IndexCidades> & indexCidades, vector<Cidades> & cidades) {
+    cout<<"\tCidades Cadastradas: "<<endl;
     for(auto & indexCidade : indexCidades) {
-        cout<<"Codigo: "<<indexCidade.codigoCidade<<" - "<<endl;
-        cout<<"Nome: "<<cidades[indexCidade.index].nome<<endl;
-        cout<<"UF: "<<cidades[indexCidade.index].uf<<endl;
-        cout<<"Codigo do Pais: "<<cidades[indexCidade.index].codigoPais<<endl;
+        cout<<"\t\t [Codigo: "<<indexCidade.codigoCidade<<"] "<< cidades[indexCidade.index].nome<<" - "<< cidades[indexCidade.index].uf <<endl;
     }
+    cout<<"\n";
 }
 void exibirCodigosPaises(vector<IndexPaises> & indexPaises, vector<Paises> & paises) {
     cout<<"\tPaises Cadastrados: "<<endl;
     for(auto & indexPais : indexPaises) {
-        cout<<"\t\t [Codigo: "<<indexPais.codigoPais<<"] - "<< paises[indexPais.index].nome<<endl;
+        cout<<"\t\t [Codigo: "<<indexPais.codigoPais<<"] "<< paises[indexPais.index].nome<<endl;
     }
-    cout<<endl;
+    cout<<"\n";
 }
 
 bool buscarPaisPorCodigo(vector<IndexPaises>& indexPaises, int codigo ) {
@@ -277,7 +320,7 @@ bool buscarCidadePorCodigo(vector<IndexCidades>& indexCidades, int codigo ) {
     for (auto & index : indexCidades) {
         if(index.codigoCidade == codigo) {
             system("cls");
-            cout<<"[Cidade ja cadastrada, informe outro codigo]: ";
+            cout<<"\t[==Cidade ja cadastrada==]\n\n ";
             return true;
         }
     }
