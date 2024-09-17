@@ -70,14 +70,14 @@ Vendas: código_venda, código_cliente, código_pacote, quantidade_pessoas, valo
 9.1) (foi) As seguintes informações devem ser exibidas: código, descrição, nome do guia, valor total arrecadado pelo pacote (valor_por_pessoa * total_participantes).
 
 
-10) Escreva uma função para exibir todos os registros da tabela de vendas.
+10) (foi) Escreva uma função para exibir todos os registros da tabela de vendas.
 
-10.1) As seguintes informações devem ser exibidas: código, nome do cliente, descrição do pacote, quantidade_pessoas e valor_total da venda.
+10.1) (foi) As seguintes informações devem ser exibidas: código, nome do cliente, descrição do pacote, quantidade_pessoas e valor_total da venda.
 
-10.2) Ao final, a função deverá exibir o valor total vendido.
+10.2) (foi) Ao final, a função deverá exibir o valor total vendido.
 
 
-11) Escreva uma função para reorganização da tabela de Clientes.
+11) (foi) Escreva uma função para reorganização da tabela de Clientes.
 
 Todas as funções descritas acima deverão ser chamadas através de um menu de opções que será chamado a partir da função main().
 

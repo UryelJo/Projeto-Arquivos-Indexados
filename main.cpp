@@ -2,7 +2,7 @@
 #include <iostream>
 #include <clocale>
 #include <vector>
-#include <string.h>
+#include <cstring>
 
 using namespace std;
 
@@ -74,6 +74,7 @@ struct IndexVendas {
 
 void textoInicial();
 void textoFinal();
+void menuDeInclusao(vector<Paises>&, vector<IndexPaises>&, vector<Cidades>&, vector<IndexCidades>&, vector<Guias>&, vector<IndexGuias>&, vector<Clientes>&, vector<IndexClientes>&, vector<Pacotes>&, vector<IndexPacotes>&, vector<Vendas>&, vector<IndexVendas>&);
 
 //Funções de inclusão de novos registros
 void incluirNovoPais(vector<Paises>&, vector<IndexPaises>&);
@@ -134,38 +135,28 @@ int main() {
 
     do {
         textoInicial();
-        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - Incluir novo Pais \n" << "\t\t[2] - Incluir nova Cidade \n"<<"\t\t[3] - Incluir novo Guia \n"<< "\t\t[4] - Incluir novo Cliente \n"<<"\t\t[5] - Excluir Cliente \n" << "\t\t[6] - Excluir Guia \n" << "\t\t[7] - Incluir Novo Pacote \n" <<"\t\t[8] - Incluir Nova Venda \n" <<" \t\t[9] - Mostrar Dados de Pacotes Completamente Vendidos \n"<<"\t\t[10] - Consultar Dados de Pacote Especifico \n" << "\t\t[11] - Consultar Dados de Vendas \n"<<"\t\t[12] - Organizar Dados dos Clientes \n" <<"\n\n\t\t[0] - Sair \n" << "\t}";
+        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - Inclusoes \n" << "\t\t[2] - Excluir Determinado Cliente \n"<<"\t\t[3] - Excluir Determinado Guia \n"<< "\t\t[4] - Consultar Pacotes que foram completamente Vendidos \n"<<"\t\t[5] - Consultar Dados de Determinado Pacote\n" << "\t\t[6] - Consultar Todas as Vendas Feitas \n" << "\t\t[7] - Organizar Tabela de Clientes\n" <<"\n\n\t\t[0] - Sair \n" << "\t}";
         cout << "[>] ";
         cin >> opcao;
         cin.ignore();
+
         if(opcao == 1) {
-            incluirNovoPais(paises, indexPaises);
+            menuDeInclusao(paises, indexPaises, cidades, indexCidades, guias, indexGuias, clientes, indexClientes, pacotes, indexPacotes, vendas, indexVendas);
         } else if(opcao == 2) {
-            incluirNovaCidade(cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 3) {
-            incluirNovoGuia(guias, indexGuias, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 4) {
-            incluirNovoCliente(clientes, indexClientes, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 5) {
             excluirCliente(clientes, indexClientes, cidades, indexCidades, vendas, indexVendas);
-        } else if(opcao == 6) {
+        } else if(opcao == 3) {
             excluirGuia(guias, indexGuias, cidades, indexCidades, paises, indexPaises, pacotes, indexPacotes);
-        } else if(opcao == 7) {
-            incluirNovoPacote(pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 8) {
-            incluirNovaVenda(vendas, indexVendas, clientes, indexClientes, pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 9) {
+        } else if(opcao == 4) {
             consultarDadosPacoteCompletamenteVendidos(pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 10) {
+        } else if(opcao == 5) {
             consultarDadosDeterminadoPacote(pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
-        } else if(opcao == 11) {
+        } else if(opcao == 6) {
             consultarDadosVendas(vendas, indexVendas, clientes, indexClientes, pacotes, indexPacotes);
-        } else if(opcao == 12) {
+        } else if(opcao == 7) {
             organizarDadosTabelaClientes(clientes, indexClientes);
-        } else if(opcao == 13) {
-            system("cls");
+        } else if(opcao == 8) {
             for(auto & cliente : clientes) {
-                cout<<cliente.nome<<endl;
+                cout<<cliente.codigoCliente<<" - "<<cliente.nome<<endl;
             }
             system("pause");
         }
@@ -208,6 +199,33 @@ void textoFinal() {
         }
     }
 }
+void menuDeInclusao(vector<Paises> & paises, vector<IndexPaises> & indexPaises, vector<Cidades> & cidades, vector<IndexCidades> & indexCidades, vector<Guias> & guias, vector<IndexGuias> & indexGuias, vector<Clientes> & clientes, vector<IndexClientes> & indexClientes, vector<Pacotes> & pacotes, vector<IndexPacotes> & indexPacotes, vector<Vendas> & vendas, vector<IndexVendas> & indexVendas) {
+    int opcao = 0;
+    system("cls");
+    do {
+        cout<<"\tInforme em qual tabela deseja incluir{ \n" << "\t\t[1] - Incluir Novo Pais \n" << "\t\t[2] - Incluir Nova Cidade \n"<<"\t\t[3] - Incluir Novo Guia \n"<< "\t\t[4] - Incluir Novo Cliente \n"<<"\t\t[5] - Incluir Novo Pacote \n" << "\t\t[6] - Incluir Nova Venda \n" << "\n\n\t\t[0] - Voltar para o Menu \n" << "\t}";
+        cout << "[>] ";
+        cin >> opcao;
+        cin.ignore();
+
+        if(opcao == 1) {
+            incluirNovoPais(paises, indexPaises);
+        } else if(opcao == 2) {
+            incluirNovaCidade(cidades, indexCidades, paises, indexPaises);
+        } else if(opcao == 3) {
+            incluirNovoGuia(guias, indexGuias, cidades, indexCidades, paises, indexPaises);
+        } else if(opcao == 4) {
+            incluirNovoCliente(clientes, indexClientes, cidades, indexCidades, paises, indexPaises);
+        } else if (opcao == 5) {
+            incluirNovoPacote(pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
+        } else if (opcao == 6) {
+            incluirNovaVenda(vendas, indexVendas, clientes, indexClientes, pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
+        } else {
+            opcao = 0;
+        }
+    } while (opcao != 0);
+    system("cls");
+}
 
 void incluirNovoPais(vector<Paises>& paises, vector<IndexPaises>& indexPaises) {
     bool inseriu = false;
@@ -216,14 +234,14 @@ void incluirNovoPais(vector<Paises>& paises, vector<IndexPaises>& indexPaises) {
     system("cls");
     do {
         exibirCodigosPaises(indexPaises, paises);
-        cout<<"\t Informe o codigo do novo pais \n\t [>]  ";
+        cout<<"\tInforme o codigo do novo pais \n\t[>] ";
         do {
             cin>>novoPais.codigoPais;
             cin.ignore();
         } while(novoPais.codigoPais < 0);
     }while(buscarPaisPorCodigo(indexPaises, novoPais.codigoPais));
     novoIndexPais.codigoPais = novoPais.codigoPais;
-    cout<<"\n\t Informe o nome do novo pais \n\t [>]  ";
+    cout<<"\n\tInforme o nome do novo pais \n\t[>] ";
     gets(novoPais.nome);
     paises.push_back(novoPais);
 
@@ -250,18 +268,27 @@ void incluirNovaCidade(vector<Cidades> & cidades, vector<IndexCidades> & indexCi
     system("cls");
     do {
         exibirCodigosCidades(indexCidades, cidades, paises, indexPaises);
-        cout<<"\t Informe o codigo da nova cidade \n\t [>]  ";
+        cout<<"\tInforme o codigo da nova cidade \n\t[>] ";
         do {
             cin>>novaCidade.codigoCidade;
             cin.ignore();
         } while(novaCidade.codigoCidade < 0);
     }while (buscarCidadePorCodigo(indexCidades, novaCidade.codigoCidade));
     novoIndexCidade.codigoCidade = novaCidade.codigoCidade;
-    cout<<"\n\t Informe o nome da nova cidade \n\t [>]  ";
+    cout<<"\n\tInforme o nome da nova cidade \n\t[>] ";
     gets(novaCidade.nome);
-    cout<<"\n\t Informe a UF da nova cidade \n\t [>]  ";
+    cout<<"\n\tInforme a UF da nova cidade \n\t[>] ";
     gets(novaCidade.uf);
     cidades.push_back(novaCidade);
+    // cout<<endl;
+    // do {
+    //     exibirCodigosPaises(indexPaises, paises);
+    //     cout<<"\tInforme o codigo do pais da nova cidade \n\t[>] ";
+    //     do {
+    //         cin>>novaCidade.codigoPais;
+    //         cin.ignore();
+    //     }while (novaCidade.codigoPais < 0);
+    // }while(buscarPaisPorCodigo(indexPaises, novaCidade.codigoPais));
 
     novoIndexCidade.index = static_cast<int>(cidades.size()-1);
 
@@ -288,23 +315,23 @@ void incluirNovoGuia(vector<Guias> & guias, vector<IndexGuias> & indexGuias, vec
     do {
         exibirCodigosGuias(indexGuias, guias, cidades, indexCidades, paises, indexPaises);
         do {
-            cout<<"\t Informe o codigo do novo guia \n\t [>]  ";
+            cout<<"\tInforme o codigo do novo guia \n\t[>] ";
             cin >> novoGuia.codigoGuia;
             cin.ignore();
         }while(novoGuia.codigoGuia < 0);
     } while (buscarGuiaPorCodigo(indexGuias, novoGuia.codigoGuia));
     novoIndexGuia.codigoGuia = novoGuia.codigoGuia;
-    cout<<"\n\t Informe o nome do novo guia \n\t [>]  ";
+    cout<<"\n\tInforme o nome do novo guia \n\t[>] ";
     gets(novoGuia.nome);
-    cout<<"\n\t Informe o endereco do novo guia \n\t [>]  ";
+    cout<<"\n\tInforme o endereco do novo guia \n\t[>] ";
     gets(novoGuia.endereco);
-    cout<<"\n\t Informe o telefone do novo guia \n\t [>]  ";
+    cout<<"\n\tInforme o telefone do novo guia \n\t[>] ";
     gets(novoGuia.telefone);
     cout<< endl;
     exibirCodigosCidades(indexCidades, cidades, paises, indexPaises);
     bool aux = false;
     do {
-        cout<<"\t Informe o codigo da cidade do novo guia \n\t [>]  ";
+        cout<<"\tInforme o codigo da cidade do novo guia \n\t[>] ";
         cin>>novoGuia.codigoCidade;
         cin.ignore();
         for(auto & indexCidade : indexCidades) {
@@ -334,27 +361,28 @@ void incluirNovoGuia(vector<Guias> & guias, vector<IndexGuias> & indexGuias, vec
 }
 void incluirNovoCliente(vector<Clientes> & clientes, vector<IndexClientes> & indexClientes, vector<Cidades> & cidades, vector<IndexCidades> & indexCidades, vector<Paises> & paises, vector<IndexPaises> & indexPaises) {
     bool inseriu = false;
+    int resposta = 0;
     Clientes novoCliente{};
     IndexClientes novoIndexCliente{};
     system("cls");
     do {
         exibirCodigosClientes(indexClientes, clientes, cidades, indexCidades);
         do {
-            cout<<"\t Informe o codigo do novo cliente \n\t [>]  ";
+            cout<<"\tInforme o codigo do novo cliente \n\t[>] ";
             cin >> novoCliente.codigoCliente;
             cin.ignore();
         }while(novoCliente.codigoCliente < 0);
     } while(buscarClientePorCodigo(indexClientes, novoCliente.codigoCliente));
     novoIndexCliente.codigoCliente = novoCliente.codigoCliente;
-    cout<<"\n\t Informe o nome do novo cliente \n\t [>]  ";
+    cout<<"\n\tInforme o nome do novo cliente \n\t[>] ";
     gets(novoCliente.nome);
-    cout<<"\n\t Informe o endereco do novo cliente \n\t [>]  ";
+    cout<<"\n\tInforme o endereco do novo cliente \n\t[>] ";
     gets(novoCliente.endereco);
     cout<< endl;
     exibirCodigosCidades(indexCidades, cidades, paises, indexPaises);
     bool aux = false;
     do {
-        cout<<"\t Informe o codigo da cidade do novo cliente \n\t [>]  ";
+        cout<<"\tInforme o codigo da cidade do novo cliente \n\t[>] ";
         cin>>novoCliente.codigoCidade;
         cin.ignore();
         for(auto & indexCidade : indexCidades) {
@@ -363,7 +391,12 @@ void incluirNovoCliente(vector<Clientes> & clientes, vector<IndexClientes> & ind
             }
         }
         if(aux == false) {
-            cout<<"\t[==Cidade nao encontrada==]" <<endl;
+            cout<<"\n\t\t[==Cidade nao encontrada==] \n\n\tDeseja cadastrar uma nova cidade?? [1 - Sim | 0 - Nao] \n\t[>] ";
+            cin>>resposta;
+            cin.ignore();
+            if(resposta == 1) {
+                incluirNovaCidade(cidades, indexCidades, paises, indexPaises);
+            }
         }
     }while (aux == false);
     clientes.push_back(novoCliente);
@@ -390,28 +423,28 @@ void incluirNovoPacote(vector<Pacotes> & pacotes, vector<IndexPacotes> & indexPa
     do {
         exibirCodigosPacotes(indexPacotes, pacotes, indexGuias, guias, cidades, indexCidades, paises, indexPaises);
         do {
-            cout<<"\t Informe o codigo do novo pacote \n\t [>]  ";
+            cout<<"\tInforme o codigo do novo pacote \n\t[>] ";
             cin >> novoPacote.codigoPacote;
             cin.ignore();
         }while(novoPacote.codigoPacote < 0);
     } while(buscarPacotePorCodigo(indexPacotes, novoPacote.codigoPacote));
     novoIndexPacote.codigoPacote = novoPacote.codigoPacote;
-    cout<<"\n\t Informe a descricao do novo pacote \n\t [>]  ";
+    cout<<"\n\tInforme a descricao do novo pacote \n\t[>] ";
     gets(novoPacote.descricao);
-    cout<<"\n\t Informe o valor por pessoa do novo pacote \n\t [>]  ";
+    cout<<"\n\tInforme o valor por pessoa do novo pacote \n\t[>] ";
     cin>>novoPacote.valorPorPessoa;
     cin.ignore();
-    cout<<"\n\t Informe o total de pessoas do novo pacote \n\t [>]  ";
+    cout<<"\n\tInforme o total de pessoas do novo pacote \n\t [>] ";
     cin>>novoPacote.totalPessoas;
     cin.ignore();
-    cout<<"\n\t Informe a quantidade maxima suportada do novo pacote \n\t [>]  ";
+    cout<<"\n\tInforme a quantidade maxima suportada do novo pacote \n\t[>] ";
     cin>>novoPacote.quantidadeMaximaSuportada;
     cin.ignore();
     cout<< endl;
     exibirCodigosGuias(indexGuias, guias, cidades, indexCidades, paises, indexPaises);
     bool aux = false;
     do {
-        cout<<"\t Informe o codigo do guia do novo pacote \n\t [>]  ";
+        cout<<"\tInforme o codigo do guia do novo pacote \n\t[>] ";
         cin>>novoPacote.codigoGuia;
         cin.ignore();
         for(auto & indexGuia : indexGuias) {
@@ -449,7 +482,7 @@ void incluirNovaVenda(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas
     do {
         exibirCodigosVendas(indexVendas, vendas, clientes, indexClientes, pacotes, indexPacotes);
         do {
-            cout<<"\t Informe o codigo da nova venda \n\t [>]  ";
+            cout<<"\tInforme o codigo da nova venda \n\t[>] ";
             cin >> novaVenda.codigoVenda;
             cin.ignore();
         }while(novaVenda.codigoVenda < 0);
@@ -460,7 +493,7 @@ void incluirNovaVenda(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas
     system("cls");
     do {
         exibirCodigosClientes(indexClientes, clientes, cidades, indexCidades);
-        cout<<"\tInforme o codigo do cliente da nova venda \n\t [>]  ";
+        cout<<"\tInforme o codigo do cliente da nova venda \n\t[>] ";
         cin>>novaVenda.codigoCliente;
         cin.ignore();
 
@@ -477,7 +510,7 @@ void incluirNovaVenda(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas
     system("cls");
     do {
         exibirCodigosPacotes(indexPacotes, pacotes, indexGuias, guias, cidades, indexCidades, paises, indexPaises);
-        cout<<"\n\tInforme o codigo do pacote da nova venda \n\t [>]  ";
+        cout<<"\n\tInforme o codigo do pacote da nova venda \n\t[>] ";
         cin>>novaVenda.codigoPacote;
         cin.ignore();
         for(auto & indexPacote : indexPacotes) {
@@ -492,7 +525,7 @@ void incluirNovaVenda(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas
         }
     } while(aux == false);
     do {
-        cout<<"\n\tInforme para quantas pessoas deseja compra o pacote\n\t [>]  ";
+        cout<<"\n\tInforme para quantas pessoas deseja compra o pacote\n\t[>]  ";
         cin>>novaVenda.quantidadePessoas;
         cin.ignore();
     }while (novaVenda.quantidadePessoas < 0);
@@ -501,7 +534,7 @@ void incluirNovaVenda(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas
             cout<< "\n\t[==Quantidade de pessoas excede a quantidade de vagas restantes para o pacote==]\n";
             cout<< "\n\t[==Quantidade de vagas restantes: "<< pacoteSelecionado.quantidadeMaximaSuportada - pacoteSelecionado.totalPessoas << "]==\n";
             do {
-                cout<<"\n\tInforme para quantas pessoas deseja compra o pacote\n\t [>]  ";
+                cout<<"\n\tInforme para quantas pessoas deseja compra o pacote\n\t[>] ";
                 cin>>novaVenda.quantidadePessoas;
                 cin.ignore();
             }while (novaVenda.quantidadePessoas < 0);
@@ -659,7 +692,7 @@ void excluirCliente(vector<Clientes> & clientes, vector<IndexClientes> & indexCl
     int codigoCliente = 0;
     bool vendaCadastradaParaOCliente = false;
     do {
-        cout<< "\t Informe o codigo do cliente que deseja excluir \n\t [>] ";
+        cout<< "\tInforme o codigo do cliente que deseja excluir \n\t[>] ";
         cin>>codigoCliente;
         cin.ignore();
     } while (codigoCliente < 0);
@@ -687,7 +720,7 @@ void excluirGuia(vector<Guias> & guias, vector<IndexGuias> & indexGuias, vector<
     int codigoGuia = 0;
     bool pacoteCadastradoParaOGuia = false;
     do {
-        cout<< "\t Informe o codigo do guia que deseja excluir \n\t [>] ";
+        cout<< "\tInforme o codigo do guia que deseja excluir \n\t[>] ";
         cin>>codigoGuia;
         cin.ignore();
     } while (codigoGuia < 0);
