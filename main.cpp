@@ -2,6 +2,7 @@
 #include <iostream>
 #include <clocale>
 #include <vector>
+#include <string.h>
 
 using namespace std;
 
@@ -98,6 +99,8 @@ void consultarDadosPacoteCompletamenteVendidos(vector<Pacotes>&, vector<IndexPac
 void consultarDadosDeterminadoPacote(vector<Pacotes>&, vector<IndexPacotes>&, vector<Guias>&, vector<IndexGuias>&, vector<Cidades>&, vector<IndexCidades>&, vector<Paises>&, vector<IndexPaises>&);
 void consultarDadosVendas(vector<Vendas>&, vector<IndexVendas>&, vector<Clientes>&, vector<IndexClientes>&, vector<Pacotes>&, vector<IndexPacotes>&);
 
+void organizarDadosTabelaClientes(vector<Clientes>&, vector<IndexClientes>&);
+
 //Funções de busca genéricos que retornam Boolean para verificar se o código já existe
 bool buscarPaisPorCodigo( vector<IndexPaises>&, int);
 bool buscarCidadePorCodigo( vector<IndexCidades>&, int);
@@ -131,7 +134,7 @@ int main() {
 
     do {
         textoInicial();
-        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - Incluir novo Pais \n" << "\t\t[2] - Incluir nova Cidade \n"<<"\t\t[3] - Incluir novo Guia \n"<< "\t\t[4] - Incluir novo Cliente \n"<<"\t\t[5] - Excluir Cliente \n" << "\t\t[6] - Excluir Guia \n" << "\t\t[7] - Incluir Novo Pacote \n" <<"\t\t[8] - Incluir Nova Venda \n" <<" \t\t[9] - Mostrar Dados de Pacotes Completamente Vendidos \n"<<"\t\t[10] - Consultar Dados de Pacote Especifico \n" << "\t\t[11] - Consultar Dados de Vendas \n"  <<"\n\n\t\t[0] - Sair \n" << "\t}";
+        cout<<"\tInforme a opcao desejada{ \n" << "\t\t[1] - Incluir novo Pais \n" << "\t\t[2] - Incluir nova Cidade \n"<<"\t\t[3] - Incluir novo Guia \n"<< "\t\t[4] - Incluir novo Cliente \n"<<"\t\t[5] - Excluir Cliente \n" << "\t\t[6] - Excluir Guia \n" << "\t\t[7] - Incluir Novo Pacote \n" <<"\t\t[8] - Incluir Nova Venda \n" <<" \t\t[9] - Mostrar Dados de Pacotes Completamente Vendidos \n"<<"\t\t[10] - Consultar Dados de Pacote Especifico \n" << "\t\t[11] - Consultar Dados de Vendas \n"<<"\t\t[12] - Organizar Dados dos Clientes \n" <<"\n\n\t\t[0] - Sair \n" << "\t}";
         cout << "[>] ";
         cin >> opcao;
         cin.ignore();
@@ -157,6 +160,14 @@ int main() {
             consultarDadosDeterminadoPacote(pacotes, indexPacotes, guias, indexGuias, cidades, indexCidades, paises, indexPaises);
         } else if(opcao == 11) {
             consultarDadosVendas(vendas, indexVendas, clientes, indexClientes, pacotes, indexPacotes);
+        } else if(opcao == 12) {
+            organizarDadosTabelaClientes(clientes, indexClientes);
+        } else if(opcao == 13) {
+            system("cls");
+            for(auto & cliente : clientes) {
+                cout<<cliente.nome<<endl;
+            }
+            system("pause");
         }
     }while(opcao != 0);
 
@@ -542,7 +553,7 @@ void consultarDadosPacoteCompletamenteVendidos(vector<Pacotes> & pacotes, vector
                     }
                 }
             }
-            cout<<"\n\t\t\t\t Total arrecadado: "<< pacoteSelecionado.valorPorPessoa * pacoteSelecionado.totalPessoas << endl;
+            cout<<"\n\t\t\t\t Total arrecadado: R$ "<< pacoteSelecionado.valorPorPessoa * pacoteSelecionado.totalPessoas << endl;
             aux = true;
         }
     }
@@ -588,7 +599,7 @@ void consultarDadosDeterminadoPacote(vector<Pacotes> & pacotes, vector<IndexPaco
                     }
                 }
             }
-            cout<<"\n\t\t\t\t Total arrecadado: "<< pacoteSelecionado.valorPorPessoa * pacoteSelecionado.totalPessoas << endl;
+            cout<<"\n\t\t\t\t Total arrecadado: R$ "<< pacoteSelecionado.valorPorPessoa * pacoteSelecionado.totalPessoas << endl;
         }
     }
     if(achou == false) {
@@ -598,6 +609,7 @@ void consultarDadosDeterminadoPacote(vector<Pacotes> & pacotes, vector<IndexPaco
 }
 void consultarDadosVendas(vector<Vendas> & vendas, vector<IndexVendas> & indexVendas, vector<Clientes> & clientes, vector<IndexClientes> & indexClientes, vector<Pacotes> & pacotes, vector<IndexPacotes> & indexPacotes) {
     system("cls");
+    double totalVendas = 0;
     cout<<"\tTodas as vendas realizadas: "<<endl;
     for(auto & indexVenda : indexVendas) {
         Vendas vendaSelecionada = vendas[indexVenda.index];
@@ -616,9 +628,29 @@ void consultarDadosVendas(vector<Vendas> & vendas, vector<IndexVendas> & indexVe
             }
         }
         cout<< "\n\t\t\tQuantidade de pessoas: "<<vendaSelecionada.quantidadePessoas;
-        cout<< "\n\t\t\tValor total vendido: "<<vendaSelecionada.valorTotal<<"\n"<<endl;
+        cout<< "\n\t\t\tValor total vendido: R$ "<<vendaSelecionada.valorTotal<<"\n"<<endl;
+        totalVendas+= vendaSelecionada.valorTotal;
     }
+
+    cout<<"\t\t[Total de todas as vendas]: R$ "<<totalVendas<<endl;
+
     system("pause");
+}
+
+void organizarDadosTabelaClientes(vector<Clientes> & clientes, vector<IndexClientes> & indexClientes) {
+    system("cls");
+    vector<IndexClientes> auxIndex = indexClientes;
+    vector<Clientes> aux = clientes;
+    indexClientes.clear();
+    clientes.clear();
+    for(auto & indexCliente : auxIndex) {
+        if(!aux[indexCliente.index].excluido) {
+            indexClientes.push_back(indexCliente);
+            clientes.push_back(aux[indexCliente.index]);
+        }
+    }
+    cout<<"\t[==Clientes organizados com sucesso==]\n";
+    system("cls");
 }
 
 void excluirCliente(vector<Clientes> & clientes, vector<IndexClientes> & indexClientes, vector<Cidades> & cidades, vector<IndexCidades> & indexCidades,  vector<Vendas> & vendas, vector<IndexVendas> & indexVendas) {
